@@ -9,11 +9,17 @@ class SimpleTable<T> extends StatefulWidget {
     required this.columns,
     required this.onRefresh,
     this.width,
+    this.topicBgColor = Colors.black26,
+    this.topicTextStyle = const TextStyle(color: Colors.red),
+    this.rowBorder = const Border(bottom: BorderSide(color: Colors.black38)),
   }) : super(key: key);
   final List<T> list;
   final List<SimpleData<T>> columns;
   final Future Function() onRefresh;
   final double? width;
+  final Color? topicBgColor;
+  final TextStyle? topicTextStyle;
+  final BoxBorder? rowBorder;
 
   @override
   State<SimpleTable<T>> createState() => _SimpleTableState<T>();
@@ -45,11 +51,14 @@ class _SimpleTableState<T> extends State<SimpleTable<T>> {
                     return SimpleColumn<T>(
                         flex: element.flex,
                         topic: element.topic,
-                        topicTextStyle: element.topicTextStyle,
-                        topicBgColor: element.topicBgColor,
+                        topicTextStyle:
+                            element.topicTextStyle ?? widget.topicTextStyle,
+                        topicBgColor:
+                            element.topicBgColor ?? widget.topicBgColor,
                         ascending: element.ascending,
                         isSort: element.isSort,
                         textAlign: element.textAlign,
+                        topicBorderRadius: element.topicBorderRadius,
                         onTap: element.isSort == true
                             ? () {
                                 for (var e in columns) {
@@ -77,10 +86,8 @@ class _SimpleTableState<T> extends State<SimpleTable<T>> {
                   var i = widget.list.indexOf(e);
                   return Container(
                     padding: const EdgeInsets.symmetric(vertical: 5),
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        border:
-                            Border(bottom: BorderSide(color: Colors.black38))),
+                    decoration: BoxDecoration(
+                        color: Colors.white, border: widget.rowBorder),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: columns.map((element) {
@@ -131,18 +138,20 @@ class SimpleData<T> {
   final Widget Function(int index, T data)? action;
   final Color? topicBgColor;
   final TextStyle? topicTextStyle;
+  final BorderRadius? topicBorderRadius;
 
-  SimpleData({
-    required this.topic,
-    this.flex = 1,
-    this.textAlign = TextAlign.center,
-    this.data,
-    this.ascending,
-    this.isSort = false,
-    this.action,
-    this.topicBgColor,
-    this.topicTextStyle,
-  }) : assert(action != null ? (data == null && !isSort) : (data != null));
+  SimpleData(
+      {required this.topic,
+      this.flex = 1,
+      this.textAlign = TextAlign.center,
+      this.data,
+      this.ascending,
+      this.isSort = false,
+      this.action,
+      this.topicBgColor,
+      this.topicTextStyle,
+      this.topicBorderRadius})
+      : assert(action != null ? (data == null && !isSort) : (data != null));
 }
 
 class SimpleColumn<T> extends StatelessWidget {
@@ -154,8 +163,9 @@ class SimpleColumn<T> extends StatelessWidget {
     this.ascending,
     this.isSort = false,
     required this.onTap,
-    this.topicBgColor = Colors.black26,
-    this.topicTextStyle = const TextStyle(color: Colors.red),
+    this.topicBgColor,
+    this.topicTextStyle,
+    this.topicBorderRadius,
   }) : super(key: key);
   final int flex;
   final TextAlign textAlign;
@@ -165,6 +175,7 @@ class SimpleColumn<T> extends StatelessWidget {
   final Function()? onTap;
   final Color? topicBgColor;
   final TextStyle? topicTextStyle;
+  final BorderRadius? topicBorderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -176,8 +187,7 @@ class SimpleColumn<T> extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 1),
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           decoration: BoxDecoration(
-            color: topicBgColor,
-          ),
+              color: topicBgColor, borderRadius: topicBorderRadius),
           child: Row(
             children: [
               Expanded(

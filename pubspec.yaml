@@ -1,6 +1,6 @@
 name: simple_table
 description: Plugin for usely table.
-version: 0.0.1
+version: 0.0.3
 homepage: https://github.com/Suwatdev007/simple_table
 
 environment:
