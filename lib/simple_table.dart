@@ -45,8 +45,11 @@ class _SimpleTableState<T> extends State<SimpleTable<T>> {
                     return SimpleColumn<T>(
                         flex: element.flex,
                         topic: element.topic,
+                        topicTextStyle: element.topicTextStyle,
+                        topicBgColor: element.topicBgColor,
                         ascending: element.ascending,
                         isSort: element.isSort,
+                        textAlign: element.textAlign,
                         onTap: element.isSort == true
                             ? () {
                                 for (var e in columns) {
@@ -89,6 +92,7 @@ class _SimpleTableState<T> extends State<SimpleTable<T>> {
                           action: element.action != null
                               ? element.action!(i, widget.list[i])
                               : const SizedBox(),
+                          textAlign: element.textAlign,
                         );
                       }).toList(),
                     ),
@@ -125,6 +129,8 @@ class SimpleData<T> {
   bool? ascending;
   final bool isSort;
   final Widget Function(int index, T data)? action;
+  final Color? topicBgColor;
+  final TextStyle? topicTextStyle;
 
   SimpleData({
     required this.topic,
@@ -134,6 +140,8 @@ class SimpleData<T> {
     this.ascending,
     this.isSort = false,
     this.action,
+    this.topicBgColor,
+    this.topicTextStyle,
   }) : assert(action != null ? (data == null && !isSort) : (data != null));
 }
 
@@ -146,6 +154,8 @@ class SimpleColumn<T> extends StatelessWidget {
     this.ascending,
     this.isSort = false,
     required this.onTap,
+    this.topicBgColor = Colors.black26,
+    this.topicTextStyle = const TextStyle(color: Colors.red),
   }) : super(key: key);
   final int flex;
   final TextAlign textAlign;
@@ -153,6 +163,8 @@ class SimpleColumn<T> extends StatelessWidget {
   final bool? ascending;
   final bool isSort;
   final Function()? onTap;
+  final Color? topicBgColor;
+  final TextStyle? topicTextStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -163,8 +175,8 @@ class SimpleColumn<T> extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 1),
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-          decoration: const BoxDecoration(
-            color: Colors.black26,
+          decoration: BoxDecoration(
+            color: topicBgColor,
           ),
           child: Row(
             children: [
@@ -172,7 +184,7 @@ class SimpleColumn<T> extends StatelessWidget {
                 child: Text(
                   topic,
                   textAlign: textAlign,
-                  style: const TextStyle(color: Colors.red),
+                  style: topicTextStyle,
                 ),
               ),
               if (isSort == true && ascending != null)
