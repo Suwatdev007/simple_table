@@ -12,6 +12,9 @@ class SimpleTable<T> extends StatefulWidget {
     this.topicBgColor = Colors.black26,
     this.topicTextStyle = const TextStyle(color: Colors.red),
     this.rowBorder = const Border(bottom: BorderSide(color: Colors.black38)),
+    this.perPage = 5,
+    this.currentPage = 1,
+    this.dataCrossAxisAlignment = CrossAxisAlignment.start,
   }) : super(key: key);
   final List<T> list;
   final List<SimpleData<T>> columns;
@@ -20,6 +23,9 @@ class SimpleTable<T> extends StatefulWidget {
   final Color? topicBgColor;
   final TextStyle? topicTextStyle;
   final BoxBorder? rowBorder;
+  final int perPage;
+  final int currentPage;
+  final CrossAxisAlignment dataCrossAxisAlignment;
 
   @override
   State<SimpleTable<T>> createState() => _SimpleTableState<T>();
@@ -69,7 +75,7 @@ class _SimpleTableState<T> extends State<SimpleTable<T>> {
                                     ? true
                                     : element.ascending == true
                                         ? false
-                                        : true;
+                                        : null;
 
                                 _sort(index, element.ascending);
                               }
@@ -89,7 +95,7 @@ class _SimpleTableState<T> extends State<SimpleTable<T>> {
                     decoration: BoxDecoration(
                         color: Colors.white, border: widget.rowBorder),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: widget.dataCrossAxisAlignment,
                       children: columns.map((element) {
                         return SimpleRow<T>(
                           flex: element.flex,

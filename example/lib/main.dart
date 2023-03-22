@@ -27,13 +27,14 @@ class _MyAppState extends State<MyApp> {
             title: const Text('Plugin example app'),
           ),
           body: SimpleTable<Map<String, dynamic>>(
-            list: const [
+            list: [
               {'topic': 'a', 'data': 'a1'},
               {'topic': 'b', 'data': 'b1'},
             ],
             columns: [
               SimpleData(topic: 'topic', data: (i, data) => data['topic']),
-              SimpleData(topic: 'data', data: (i, data) => data['data']),
+              SimpleData(
+                  topic: 'data', data: (i, data) => data['data'], isSort: true),
             ],
             onRefresh: () async {
               return true;
