@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.simple_table_example">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
    <application
         android:label="simple_table_example"
         android:name="${applicationName}"
